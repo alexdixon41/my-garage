@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.alex.mygarage.ui.garage.GarageFragment"
+        android:label="@string/title_garage"
+        tools:layout="@layout/fragment_garage">
+        <action
+            android:id="@+id/selectVehicleAction"
+            app:destination="@id/details_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/addVehicleAction"
+            app:destination="@id/editDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/details_fragment"
+        android:name="com.alex.mygarage.ui.details.DetailsFragment"
+        android:label="@string/title_details"
+        tools:layout="@layout/fragment_details">
+        <action
+            android:id="@+id/actionEditVehicle"
+            app:destination="@id/editDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editDetailsFragment"
+        android:name="com.alex.mygarage.ui.details.EditDetailsFragment"
+        android:label="@string/title_edit_details"
+        tools:layout="@layout/fragment_edit_details" >
+        <argument
+            android:name="isNewVehicle"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+</navigation>

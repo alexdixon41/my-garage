@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/vehicle_list_item_background">
+
+    <ImageView
+        android:id="@+id/vehicleImage"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/default_vehicle_image" />
+
+<!--    <com.makeramen.roundedimageview.RoundedImageView-->
+<!--        android:id="@+id/vehicleImage"-->
+<!--        android:layout_width="96dp"-->
+<!--        android:layout_height="96dp"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:scaleType="center"-->
+<!--        app:riv_corner_radius="48dp"-->
+<!--        app:riv_border_color="@android:color/darker_gray"-->
+<!--        app:riv_border_width="4dp"-->
+<!--        android:padding="8dp"-->
+<!--        android:src="@drawable/default_vehicle_image">-->
+
+<!--    </com.makeramen.roundedimageview.RoundedImageView>-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/vehicleImage" >
+
+        <TextView
+            android:id="@+id/vehicleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="asdf"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/vehicleListItemYearMakeModelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="asdf"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+</RelativeLayout>
