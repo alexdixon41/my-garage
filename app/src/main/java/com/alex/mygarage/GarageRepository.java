@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.alex.mygarage.models.Component;
+import com.alex.mygarage.models.ComponentField;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.models.VehicleField;
 
@@ -81,5 +83,46 @@ public class GarageRepository {
         GarageRoomDatabase.databaseWriteExecutor.execute(() -> {
             garageDao.updateVehicleFields(fields);
         });
+    }
+
+    public LiveData<List<Component>> getVehicleComponents(long vid) {
+        return garageDao.getVehicleComponents(vid);
+    }
+
+    public LiveData<Component> getComponentById(long cid) {
+        System.out.println("Repository: " + cid);
+        System.out.println(garageDao.getComponent(1).getValue());
+        return garageDao.getComponent(cid);
+    }
+
+    public long insertVehicleComponent(Component component) {
+        long insertId = 0;
+        Callable<Long> insertCallable = () ->
+                garageDao.insertVehicleComponent(component);
+        Future<Long> future = GarageRoomDatabase.databaseWriteExecutor.submit(insertCallable);
+        try {
+            insertId = future.get();
+        }
+        catch (InterruptedException | ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        return insertId;
+    }
+
+    public void insertComponentField(ComponentField field) {
+        GarageRoomDatabase.databaseWriteExecutor.execute(() -> {
+            garageDao.insertComponentField(field);
+        });
+    }
+
+    public void insertComponentFields(List<ComponentField> fields) {
+        GarageRoomDatabase.databaseWriteExecutor.execute(() -> {
+            garageDao.insertComponentFields(fields);
+        });
+    }
+
+    public LiveData<List<ComponentField>> getComponentFields(long cid) {
+        return garageDao.getComponentFields(cid);
     }
 }

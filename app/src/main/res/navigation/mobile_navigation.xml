@@ -39,5 +39,12 @@
             android:name="isNewVehicle"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_editDetailsFragment_to_editComponentFragment"
+            app:destination="@id/editComponentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editComponentFragment"
+        android:name="com.alex.mygarage.ui.details.EditComponentFragment"
+        android:label="EditComponentFragment" />
 </navigation>

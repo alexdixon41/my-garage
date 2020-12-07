@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/engineMenuItem"
+        android:title="@string/engine_title"
+        android:icon="@drawable/ic_engine_icon_vector" />
+    <item
+        android:id="@+id/transmissionMenuItem"
+        android:title="@string/transmission_title"
+        android:icon="@drawable/ic_transmission_icon_vector" />
+    <item
+        android:id="@+id/wheelsMenuItem"
+        android:title="@string/wheels_title" />
+    <item
+        android:id="@+id/tiresMenuItem"
+        android:title="@string/tires_title"
+        android:icon="@drawable/ic_tires_icon_vector" />
+    <item
+        android:id="@+id/otherMenuItem"
+        android:title="@string/other_title" />
+</menu>

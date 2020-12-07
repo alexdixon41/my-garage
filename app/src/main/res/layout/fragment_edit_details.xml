@@ -8,6 +8,7 @@
     tools:context=".ui.details.EditDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -195,6 +196,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newFieldView" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/editVehicleComponentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
         <Button
             android:id="@+id/addComponentButton"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -206,7 +215,7 @@
             android:drawablePadding="4dp"
             android:text="@string/add_component_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider7" />
+            app:layout_constraintTop_toBottomOf="@+id/editVehicleComponentsRecyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

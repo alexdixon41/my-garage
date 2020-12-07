@@ -3,10 +3,14 @@ package com.alex.mygarage.ui.details;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,17 +18,25 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alex.mygarage.GarageRepository;
+import com.alex.mygarage.GenericClickListener;
 import com.alex.mygarage.R;
+import com.alex.mygarage.RecyclerClickListener;
 import com.alex.mygarage.adapters.CustomFieldAdapter;
+import com.alex.mygarage.adapters.VehicleComponentsAdapter;
+import com.alex.mygarage.models.Component;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.models.VehicleField;
 import com.alex.mygarage.ui.garage.GarageViewModel;
@@ -38,6 +50,7 @@ public class EditDetailsFragment extends Fragment {
     private Vehicle mVehicle;             // the vehicle being edited
 
     private List<VehicleField> vehicleFields;
+    private List<Component> vehicleComponents;
 
     private EditText nameText;
     private EditText yearText;
@@ -53,6 +66,7 @@ public class EditDetailsFragment extends Fragment {
     private GarageRepository garageRepository;
 
     private RecyclerView vehicleFieldsRecyclerView;
+    private RecyclerView vehicleComponentsRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +89,13 @@ public class EditDetailsFragment extends Fragment {
         CustomFieldAdapter customFieldAdapter = new CustomFieldAdapter(garageRepository);
         vehicleFieldsRecyclerView.setAdapter(customFieldAdapter);
 
+        // configure recycler view for vehicle components
+        vehicleComponentsRecyclerView = root.findViewById(R.id.editVehicleComponentsRecyclerView);
+        vehicleComponentsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        VehicleComponentsAdapter vehicleComponentsAdapter = new VehicleComponentsAdapter();
+        vehicleComponentsRecyclerView.setAdapter(vehicleComponentsAdapter);
 
+        // get default field EditTexts
         nameText = root.findViewById(R.id.nameEditText);
         yearText = root.findViewById(R.id.yearEditText);
         makeText = root.findViewById(R.id.makeEditText);
@@ -97,23 +117,30 @@ public class EditDetailsFragment extends Fragment {
         DriveTypeSpinnerAdapter mAdapter = new DriveTypeSpinnerAdapter();
         driveTypeSpinner.setAdapter(mAdapter);
 
+        // set click listener for add component button
+        Button addComponentButton = root.findViewById(R.id.addComponentButton);
+        ConstraintLayout editConstraintLayout = root.findViewById(R.id.editConstraintLayout);
+        addComponentButton.setOnClickListener(new AddComponentOnClickListener(addComponentButton, mVehicle, editConstraintLayout));
+
+        // update vehicle component list in response to changes to the selected vehicle's custom fields
+        garageViewModel.getVehicleComponents().observe(this, components -> {
+            EditDetailsFragment.this.vehicleComponents = components;
+            vehicleComponentsAdapter.setVehicleComponents(components);
+        });
+
         // update vehicle fields in response to changes to the selected vehicle's custom fields
-        garageViewModel.getVehicleFields().observe(this, new Observer<List<VehicleField>>() {
-            @Override
-            public void onChanged(@Nullable List<VehicleField> vehicleFields) {
-                EditDetailsFragment.this.vehicleFields = vehicleFields;
-                customFieldAdapter.setCustomFields(vehicleFields);
-            }
+        garageViewModel.getVehicleFields().observe(this, vehicleFields -> {
+            EditDetailsFragment.this.vehicleFields = vehicleFields;
+            customFieldAdapter.setCustomFields(vehicleFields);
         });
 
-        garageViewModel.getSelected().observe(this, new Observer<Vehicle>() {
-            @Override
-            public void onChanged(Vehicle vehicle) {
-                mVehicle = vehicle;
-                loadVehicle();
-            }
+        // respond to changes in the selected vehicle
+        garageViewModel.getSelectedVehicle().observe(this, vehicle -> {
+            mVehicle = vehicle;
+            loadVehicle();
         });
 
+        // set click listener to add new vehicle field
         NewCustomFieldView newVehicleFieldView = root.findViewById(R.id.newFieldView);
         newVehicleFieldView.getAddFieldButton().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +157,25 @@ public class EditDetailsFragment extends Fragment {
                 newVehicleFieldView.getFieldValueEditText().setText("");
             }
         });
+
+        // set click listener to go to editComponent fragment when a component is selected from the recyclerview
+        vehicleComponentsRecyclerView.addOnItemTouchListener(new RecyclerClickListener(getContext(),
+                vehicleComponentsRecyclerView, new GenericClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        Component selectedComponent = vehicleComponentsAdapter.getComponent(position);
+                        if (selectedComponent == null) {
+                            Toast.makeText(getContext(), "Component data not loaded yet", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            garageViewModel.selectComponent(selectedComponent);
+                            assert getActivity() != null;
+                            NavController c = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                            c.navigate(R.id.editComponentFragment);
+                        }
+                    }
+                }));
+
 
         return root;
     }
@@ -313,6 +359,61 @@ public class EditDetailsFragment extends Fragment {
         @Override
         public boolean isEmpty() {
             return dropDownItems.length == 0;
+        }
+    }
+
+    class AddComponentOnClickListener implements Button.OnClickListener {
+
+        Button newComponentButton;
+        Vehicle selectedVehicle;
+        ConstraintLayout editConstraintLayout;
+
+        // IDs for each type of component
+        private final int ENGINE_ID = 1;
+        private final int TRANSMISSION_ID = 2;
+        private final int WHEELS_ID = 3;
+        private final int TIRES_ID = 4;
+
+        AddComponentOnClickListener(Button newComponentButton, Vehicle selectedVehicle, ConstraintLayout editConstraintLayout) {
+            this.newComponentButton = newComponentButton;
+            this.selectedVehicle = selectedVehicle;
+            this.editConstraintLayout = editConstraintLayout;
+        }
+
+        @Override
+        public void onClick(View view) {
+            assert getActivity() != null;
+
+            PopupMenu popup = new PopupMenu(getActivity(), newComponentButton);
+            popup.getMenuInflater().inflate(R.menu.component_selection_menu, popup.getMenu());
+
+            // set onClick events for each menu item to add the selected type of component
+            popup.getMenu().findItem(R.id.engineMenuItem).setOnMenuItemClickListener(result -> {
+                Toast.makeText(getActivity(), "Engine selected", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+
+            popup.getMenu().findItem(R.id.transmissionMenuItem).setOnMenuItemClickListener(result -> {
+                Toast.makeText(getActivity(), "Transmission selected", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+
+            popup.getMenu().findItem(R.id.wheelsMenuItem).setOnMenuItemClickListener(result -> {
+                Toast.makeText(getActivity(), "Wheels selected", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+
+            popup.getMenu().findItem(R.id.tiresMenuItem).setOnMenuItemClickListener(result -> {
+                Toast.makeText(getActivity(), "Tires selected", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+
+            popup.getMenu().findItem(R.id.otherMenuItem).setOnMenuItemClickListener(result -> {
+                Toast.makeText(getActivity(), "Other selected", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+
+            popup.show();
         }
     }
 }

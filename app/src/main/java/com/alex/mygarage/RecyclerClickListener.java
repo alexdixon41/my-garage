@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
  * Listen for single tap events on garageRecyclerView items to launch the detailed information
  * fragment for the selected vehicle
  */
-public class GarageRecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+public class RecyclerClickListener implements RecyclerView.OnItemTouchListener {
 
     private GestureDetector gestureDetector;
     private RecyclerView garageRecyclerView;
     private GenericClickListener clickListener;
 
-    public GarageRecyclerTouchListener(Context context, RecyclerView garageRecyclerView, GenericClickListener clickListener) {
+    public RecyclerClickListener(Context context, RecyclerView garageRecyclerView, GenericClickListener clickListener) {
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             // only detect SingleTapUp events
 

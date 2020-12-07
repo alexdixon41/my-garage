@@ -16,7 +16,7 @@
     <string name="cancel_delete_choice">Cancel</string>
 
     <!-- Edit vehicle hint strings -->
-    <string name="hint_name">Vehicle Name</string>
+    <string name="hint_name">Component Name</string>
     <string name="hint_year">Year</string>
     <string name="hint_make">Make</string>
     <string name="hint_model">Model</string>
@@ -51,5 +51,16 @@
     <string name="remove_field_button">Remove field</string>
     <string name="save">Save</string>
     <string name="custom_fields">Custom Fields</string>
+    <string name="component_name">Component Name</string>
+
+    <!-- Component names -->
+    <string name="engine_title">Engine</string>
+    <string name="transmission_title">Transmission</string>
+    <string name="wheels_title">Wheels</string>
+    <string name="tires_title">Tires</string>
+    <string name="other_title">Other</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

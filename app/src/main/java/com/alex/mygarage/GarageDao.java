@@ -8,6 +8,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.alex.mygarage.models.Component;
+import com.alex.mygarage.models.ComponentField;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.models.VehicleField;
 
@@ -36,9 +38,27 @@ public interface GarageDao {
     @Update
     void updateVehicleFields(List<VehicleField> fields);
 
+    @Delete
+    void deleteVehicleField(VehicleField field);
+
+    @Query("SELECT * FROM component WHERE vehicleId = :vid")
+    LiveData<List<Component>> getVehicleComponents(long vid);
+
+    @Insert
+    long insertVehicleComponent(Component component);
+
     @Query("SELECT * FROM vehicleField")
     List<VehicleField> getAllFields();
 
-    @Delete
-    void deleteVehicleField(VehicleField field);
+    @Insert
+    void insertComponentField(ComponentField field);
+
+    @Insert
+    void insertComponentFields(List<ComponentField> fields);
+
+    @Query("SELECT * FROM component WHERE id = :id")
+    LiveData<Component> getComponent(long id);
+
+    @Query("SELECT * FROM componentField WHERE cid = :cid")
+    LiveData<List<ComponentField>> getComponentFields(long cid);
  }

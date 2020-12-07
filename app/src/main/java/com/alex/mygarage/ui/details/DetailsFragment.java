@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,37 +19,62 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.alex.mygarage.GarageRepository;
 import com.alex.mygarage.R;
+import com.alex.mygarage.adapters.ComponentPagerAdapter;
+import com.alex.mygarage.models.Component;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.ui.garage.GarageViewModel;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailsFragment extends Fragment {
 
     private GarageViewModel garageViewModel;
 
     private CardView vehicleImageView;
+    private List<Component> components;
 
+    private void setComponents(List<Component> components) {
+        this.components = components;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         assert getActivity() != null;
         garageViewModel = ViewModelProviders.of(getActivity()).get(GarageViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_details, container, false);
+        View root = inflater.inflate(R.layout.vehicle_fragment, container, false);
 
-        vehicleImageView = root.findViewById(R.id.vehicleMainImage);
+//        vehicleImageView = root.findViewById(R.id.vehicleMainImage);
 
-        TextView nameTextView = root.findViewById(R.id.vehicleNameText);
-        TextView yearMakeModelTextView = root.findViewById(R.id.yearMakeModelText);
-        TextView trimBodyDoorsTextView = root.findViewById(R.id.trimBodyDoorsText);
-        TextView colorTextView = root.findViewById(R.id.colorText);
-        TextView driveTypeTextView = root.findViewById(R.id.driveTypeText);
-        TextView generalOtherTextView = root.findViewById(R.id.generalOtherText);
+//        TextView nameTextView = root.findViewById(R.id.vehicleNameText);
+//        TextView yearMakeModelTextView = root.findViewById(R.id.yearMakeModelText);
+//        TextView trimBodyDoorsTextView = root.findViewById(R.id.trimBodyDoorsText);
+//        TextView colorTextView = root.findViewById(R.id.colorText);
+//        TextView driveTypeTextView = root.findViewById(R.id.driveTypeText);
+//        TextView generalOtherTextView = root.findViewById(R.id.generalOtherText);
 
         // get the id of the vehicle to display details for
-        assert getArguments() != null;
-        Vehicle selectedVehicle = garageViewModel.getSelected().getValue();
-        if (selectedVehicle != null) {
+        Vehicle selectedVehicle = garageViewModel.getSelectedVehicle().getValue();
+
+        ViewPager2 viewPager = root.findViewById(R.id.viewPager);
+        TabLayout tabLayout = root.findViewById(R.id.tabLayout);
+
+        // update vehicle component list in response to changes to the selected vehicle's custom fields
+        garageViewModel.getVehicleComponents().observe(this, components -> {
+            ComponentPagerAdapter componentPagerAdapter = new ComponentPagerAdapter(this, components);
+            viewPager.setAdapter(componentPagerAdapter);
+
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> tab.setText(components.get(position).getName())
+            ).attach();
+        });
+
+        /*if (selectedVehicle != null) {
             nameTextView.setText(selectedVehicle.getName());
 
             String yearMakeModel = selectedVehicle.getYear() + " " + selectedVehicle.getMake() + " " + selectedVehicle.getModel();
@@ -66,30 +90,30 @@ public class DetailsFragment extends Fragment {
             Toast.makeText(getContext(), "No vehicle selected", Toast.LENGTH_SHORT).show();
             assert getActivity() != null;
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigateUp();
-        }
+        }*/
 
         // change image
-        vehicleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                assert getActivity() != null;
-                PopupMenu popup = new PopupMenu(getActivity(), vehicleImageView);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.set_vehicle_image_menu, popup.getMenu());
-                popup.getMenu().findItem(R.id.setImageMenuItem).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        // TODO - launch activity to set an image for the vehicle
-                        Toast.makeText(getActivity(), "Cannot change image at this time", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                });
-                popup.show();
-            }
-        });
+//        vehicleImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                assert getActivity() != null;
+//                PopupMenu popup = new PopupMenu(getActivity(), vehicleImageView);
+//                MenuInflater inflater = popup.getMenuInflater();
+//                inflater.inflate(R.menu.set_vehicle_image_menu, popup.getMenu());
+//                popup.getMenu().findItem(R.id.setImageMenuItem).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        // TODO - launch activity to set an image for the vehicle
+//                        Toast.makeText(getActivity(), "Cannot change image at this time", Toast.LENGTH_SHORT).show();
+//                        return false;
+//                    }
+//                });
+//                popup.show();
+//            }
+//        });
 
-        Button editButton = root.findViewById(R.id.editButton);
-        editButton.setOnClickListener(new EditOnClickListener(editButton, selectedVehicle));
+//        Button editButton = root.findViewById(R.id.editButton);
+//        editButton.setOnClickListener(new EditOnClickListener(editButton, selectedVehicle));
 
         return root;
     }

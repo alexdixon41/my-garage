@@ -8,6 +8,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.alex.mygarage.models.Component;
+import com.alex.mygarage.models.ComponentField;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.models.VehicleField;
 
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Vehicle.class, VehicleField.class}, version = 6, exportSchema = false)
+@Database(entities = {Vehicle.class, VehicleField.class, Component.class, ComponentField.class}, version = 9, exportSchema = false)
 public abstract class GarageRoomDatabase extends RoomDatabase {
 
     public abstract GarageDao garageDao();
@@ -57,6 +59,24 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setDoors("2-Door");
                 vehicle.setColor("Satin Silver");
                 vehicle.setDriveType("Rear-Wheel Drive");
+                vehicle.setId(1);
+                dao.insertVehicle(vehicle);
+
+
+                Component engine = new Component();
+                engine.setId(1234);
+                engine.setIconName("ic_engine_icon_vector");
+                engine.setName("4.6 Modular");
+                engine.setVehicleId(1);
+                System.out.println("Vehicle ID: " + vehicle.getId() + " !!!!!");
+                dao.insertVehicleComponent(engine);
+
+                Component trans = new Component();
+                trans.setId(1235);
+                trans.setIconName("none");
+                trans.setName("Tremec T3650");
+                trans.setVehicleId(1);
+                dao.insertVehicleComponent(trans);
 
                 vehicle = new Vehicle();
                 vehicle.setName("2006 Subaru Forester");
@@ -70,6 +90,7 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setDriveType("All-Wheel Drive");
                 vehicle.setGeneralOther("Poobaru");
                 dao.insertVehicle(vehicle);
+
                 vehicle = new Vehicle();
                 vehicle.setName("2001 Honda Prelude");
                 vehicle.setYear("2001");
@@ -82,6 +103,7 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setDriveType("Front-Wheel Drive");
                 vehicle.setGeneralOther("Smokey");
                 dao.insertVehicle(vehicle);
+
                 vehicle = new Vehicle();
                 vehicle.setName("2001 Mazda Tribute");
                 vehicle.setYear("2001");
@@ -94,6 +116,7 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setDriveType("Front/Four-Wheel Drive");
                 vehicle.setGeneralOther("Rusty");
                 dao.insertVehicle(vehicle);
+
                 vehicle = new Vehicle();
                 vehicle.setName("1999 Ford F250");
                 vehicle.setYear("1999");
@@ -106,6 +129,7 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setDriveType("Rear/Four-Wheel Drive");
                 vehicle.setGeneralOther("Trusty");
                 dao.insertVehicle(vehicle);
+
                 vehicle = new Vehicle();
                 vehicle.setName("2003 Ford Mustang Cobra");
                 vehicle.setYear("2003");

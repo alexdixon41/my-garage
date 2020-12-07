@@ -33,7 +33,7 @@ public class GarageViewAdapter extends RecyclerView.Adapter<GarageViewAdapter.Vi
 
             rootView = v;
 //            vehicleImage = (RoundedImageView) v.findViewById(R.id.vehicleImage);
-            vehicleTextView = (TextView) v.findViewById(R.id.vehicleText);
+            vehicleTextView = v.findViewById(R.id.vehicleText);
             yearMakeModelTextView = v.findViewById(R.id.vehicleListItemYearMakeModelText);
         }
 

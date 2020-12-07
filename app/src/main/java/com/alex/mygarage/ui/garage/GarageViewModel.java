@@ -6,20 +6,21 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.alex.mygarage.GarageRepository;
+import com.alex.mygarage.models.Component;
+import com.alex.mygarage.models.ComponentField;
 import com.alex.mygarage.models.Vehicle;
 import com.alex.mygarage.models.VehicleField;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GarageViewModel extends AndroidViewModel {
 
     private GarageRepository repository;
     private LiveData<List<Vehicle>> vehicleList;
-    private final MutableLiveData<Vehicle> selected = new MutableLiveData<Vehicle>();
+    private final MutableLiveData<Vehicle> selectedVehicle = new MutableLiveData<>();
+    private final MutableLiveData<Component> selectedComponent = new MutableLiveData<>();
 
     public GarageViewModel(@NonNull Application application) {
         super(application);
@@ -32,20 +33,53 @@ public class GarageViewModel extends AndroidViewModel {
         return vehicleList;
     }
 
-    public void select(Vehicle vehicle) {
-        selected.setValue(vehicle);
+    public void selectVehicle(Vehicle vehicle) {
+        selectedVehicle.setValue(vehicle);
     }
 
-    public LiveData<Vehicle> getSelected() {
-        return selected;
+    public LiveData<Vehicle> getSelectedVehicle() {
+        return selectedVehicle;
     }
 
     public LiveData<List<VehicleField>> getVehicleFields() {
-        System.out.println("HERE");
-        if (selected.getValue() != null)
-            return repository.getVehicleFields(selected.getValue().getId());
+        if (selectedVehicle.getValue() != null)
+            return repository.getVehicleFields(selectedVehicle.getValue().getId());
 
         System.out.println("No vehicle selected!!!!");
         return repository.getVehicleFields(0);
     }
+
+    public LiveData<List<Component>> getVehicleComponents() {
+        if (selectedVehicle.getValue() != null)
+            return repository.getVehicleComponents(selectedVehicle.getValue().getId());
+
+        System.out.println("No vehicle selected when retrieving components!!!!");
+        return repository.getVehicleComponents(0);
+    }
+
+    public void selectComponentWithId(long id) {
+        Component selected = repository.getComponentById(id).getValue();
+        System.out.println("ViewModel: " + selected == null);
+        if (selected != null) {
+            System.out.println(selected.getName());
+        }
+        selectedComponent.setValue(selected);
+    }
+
+    public void selectComponent(Component component) {
+        selectedComponent.setValue(component);
+    }
+
+    public LiveData<Component> getSelectedComponent() {
+        return selectedComponent;
+    }
+
+    public LiveData<List<ComponentField>> getComponentFields() {
+        if (selectedComponent.getValue() != null)
+            return repository.getComponentFields(selectedComponent.getValue().getId());
+
+        System.out.println("No component selected when retrieving fields");
+        return repository.getComponentFields(0);
+    }
+
 }

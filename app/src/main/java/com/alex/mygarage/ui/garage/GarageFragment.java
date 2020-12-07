@@ -22,16 +22,19 @@ import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alex.mygarage.GarageRecyclerTouchListener;
+import com.alex.mygarage.RecyclerClickListener;
 import com.alex.mygarage.GarageRepository;
 import com.alex.mygarage.GenericClickListener;
 import com.alex.mygarage.R;
 import com.alex.mygarage.VehicleLookup;
 import com.alex.mygarage.VehicleKeyProvider;
 import com.alex.mygarage.adapters.GarageViewAdapter;
+import com.alex.mygarage.models.Component;
+import com.alex.mygarage.models.ComponentField;
 import com.alex.mygarage.models.Vehicle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GarageFragment extends Fragment {
@@ -77,7 +80,7 @@ public class GarageFragment extends Fragment {
                 .build();
 
         // detect click events on a single item to launch the details fragment for the selected vehicle
-        garageRecyclerView.addOnItemTouchListener(new GarageRecyclerTouchListener(getContext(), garageRecyclerView, new GenericClickListener() {
+        garageRecyclerView.addOnItemTouchListener(new RecyclerClickListener(getContext(), garageRecyclerView, new GenericClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Vehicle selectedVehicle = garageAdapter.getVehicle(position);
@@ -85,7 +88,7 @@ public class GarageFragment extends Fragment {
                     Toast.makeText(getContext(), "Vehicle data not loaded yet", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    garageViewModel.select(selectedVehicle);
+                    garageViewModel.selectVehicle(selectedVehicle);
                     Activity activity = getActivity();
                     assert activity != null;
                     NavController c = Navigation.findNavController(activity, R.id.nav_host_fragment);
@@ -145,7 +148,84 @@ public class GarageFragment extends Fragment {
 
         @Override
         protected Long doInBackground(Vehicle... vehicles) {
-            return repository.insertVehicle(newVehicle);            // insert the new vehicle so its id will be set
+            long vehicleInsertId = repository.insertVehicle(newVehicle);            // insert the new vehicle so its id will be set
+
+            // insert engine component
+            Component engine = new Component();
+            engine.setIconName("ic_engine_icon_vector");
+            engine.setName("Engine");
+            engine.setVehicleId(vehicleInsertId);
+            long componentInsertId = repository.insertVehicleComponent(engine);
+
+            // create engine component default fields and add to list so they can all be inserted at once
+            ArrayList<ComponentField> engineFields = new ArrayList<>();
+            ComponentField displacement = new ComponentField();
+            displacement.setName("Displacement");
+            displacement.setCid(componentInsertId);
+            engineFields.add(displacement);
+            ComponentField config = new ComponentField();
+            config.setName("Configuration");
+            config.setCid(componentInsertId);
+            engineFields.add(config);
+            ComponentField valvesPerCylinder = new ComponentField();
+            valvesPerCylinder.setName("Valves per cylinder");
+            valvesPerCylinder.setCid(componentInsertId);
+            engineFields.add(valvesPerCylinder);
+            ComponentField cylinderHeadConfig = new ComponentField();
+            cylinderHeadConfig.setName("Cylinder head configuration");
+            cylinderHeadConfig.setCid(componentInsertId);
+            engineFields.add(cylinderHeadConfig);
+
+            // insert default engine fields
+            repository.insertComponentFields(engineFields);
+
+            // insert transmission component
+            Component transmission = new Component();
+            transmission.setIconName("ic_transmission_icon_vector");
+            transmission.setName("Transmission");
+            transmission.setVehicleId(vehicleInsertId);
+            componentInsertId = repository.insertVehicleComponent(transmission);
+
+            // create transmission component default fields and add to list so they can all be inserted at once
+            ArrayList<ComponentField> transmissionFields = new ArrayList<>();
+            ComponentField gears = new ComponentField();
+            gears.setName("Gears");
+            gears.setCid(componentInsertId);
+            transmissionFields.add(gears);
+            ComponentField type = new ComponentField();
+            type.setName("Type");
+            type.setCid(componentInsertId);
+            transmissionFields.add(type);
+            ComponentField manufacturer = new ComponentField();
+            manufacturer.setName("Manufacturer");
+            manufacturer.setCid(componentInsertId);
+            transmissionFields.add(manufacturer);
+            ComponentField name = new ComponentField();
+            name.setName("Name");
+            name.setCid(componentInsertId);
+            transmissionFields.add(name);
+            repository.insertComponentFields(transmissionFields);
+
+            // insert tires component
+            Component tires = new Component();
+            tires.setIconName("ic_tires_icon_vector");
+            tires.setName("Tires");
+            tires.setVehicleId(vehicleInsertId);
+            repository.insertVehicleComponent(tires);
+
+            // create tires component default fields and add to list so they can all be inserted at once
+            ArrayList<ComponentField> tiresFields = new ArrayList<>();
+            ComponentField tireName = new ComponentField();
+            tireName.setName("Name");
+            tireName.setCid(componentInsertId);
+            tiresFields.add(tireName);
+            ComponentField size = new ComponentField();
+            size.setName("Size");
+            size.setCid(componentInsertId);
+            tiresFields.add(size);
+            repository.insertComponentFields(tiresFields);
+
+            return vehicleInsertId;
         }
 
         @Override
@@ -155,8 +235,7 @@ public class GarageFragment extends Fragment {
             }
             else {
                 newVehicle.setId(result);
-                garageViewModel.select(newVehicle);
-                System.out.println("THE ID IS: " + newVehicle.getId());
+                garageViewModel.selectVehicle(newVehicle);
                 GarageFragmentDirections.AddVehicleAction action = GarageFragmentDirections.addVehicleAction();
                 nav.navigate(action);
             }

@@ -84,7 +84,7 @@ public class CustomFieldAdapter extends RecyclerView.Adapter<CustomFieldAdapter.
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View fieldView = inflater.inflate(R.layout.custom_field_view, parent, false);
+        View fieldView = inflater.inflate(R.layout.edit_field_view, parent, false);
 
         return new CustomFieldViewHolder(fieldView);
     }

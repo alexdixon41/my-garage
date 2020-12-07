@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<!-- Author: Alex Dixon - 2020 -->
+
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="50"
+   height="50"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg6405">
+  <defs
+     id="defs6399" />
+  <metadata
+     id="metadata6402">
+  </metadata>
+  <g
+     id="layer1">
+    <g
+       id="g7208"
+       transform="matrix(1.4965662,0,0,1.4595673,-2.0360011,-8.2102254)"
+       style="stroke-width:0.67661238">
+      <g
+         id="g7090"
+         style="stroke-width:0.67661238">
+        <path
+           style="fill:#000000"
+           d="m 12,14 h 2 l -0.2,-2 h -1.6 z"
+           id="path6950"/>
+        <path
+           style="fill:#000000"
+           d="m 12,24 h 2 l -0.2,2 h -1.6 z"
+           id="path6950-3"/>
+        <path
+           style="fill:#000000"
+           d="m 18,18 v 2 l 2,-0.2 v -1.6 z"
+           id="path6950-0"/>
+        <path
+           style="fill:#000000"
+           d="m 8,18 v 2 L 6,19.8 v -1.6 z"
+           id="path6950-0-2"/>
+        <path
+           style="fill:#000000"
+           d="M 10.171114,14.756886 8.7569,16.1711 7.4841078,14.615465 8.6154786,13.484094 Z"
+           id="path6950-0-2-4"/>
+        <path
+           style="fill:#000000"
+           d="M 10.171114,23.243514 8.7569,21.8293 7.4841078,23.384935 8.6154786,24.516306 Z"
+           id="path6950-0-2-4-7"/>
+        <path
+           style="fill:#000000"
+           d="M 17.239114,16.175314 15.8249,14.7611 l 1.555635,-1.272792 1.131371,1.131371 z"
+           id="path6950-0-2-4-5"/>
+        <path
+           style="fill:#000000"
+           d="M 15.820686,23.243314 17.2349,21.8291 l 1.272792,1.555635 -1.131371,1.131371 z"
+           id="path6950-0-2-4-5-0"/>
+        <circle
+           style="opacity:1;fill:#000000"
+           id="path7079"
+           cx="13"
+           cy="19"
+           r="5.0999999" />
+      </g>
+      <circle
+         r="2.5"
+         cy="19"
+         cx="13"
+         id="path7134"
+         style="opacity:1;fill:none;stroke:#ffffff;stroke-width:1.01491857px" />
+    </g>
+    <g
+       transform="matrix(1.4965662,0,0,1.4595673,13.161786,1.5317314)"
+       id="g7208-9"
+       style="stroke-width:0.67661238">
+      <g
+         id="g7090-9"
+         style="stroke-width:0.67661238">
+        <path
+           style="fill:#000000"
+           d="m 12,14 h 2 l -0.2,-2 h -1.6 z"
+           id="path6950-5"/>
+        <path
+           style="fill:#000000"
+           d="m 12,24 h 2 l -0.2,2 h -1.6 z"
+           id="path6950-3-9"/>
+        <path
+           style="fill:#000000"
+           d="m 18,18 v 2 l 2,-0.2 v -1.6 z"
+           id="path6950-0-8" />
+        <path
+           style="fill:#000000"
+           d="m 8,18 v 2 L 6,19.8 v -1.6 z"
+           id="path6950-0-2-1"/>
+        <path
+           style="fill:#000000"
+           d="M 10.171114,14.756886 8.7569,16.1711 7.4841078,14.615465 8.6154786,13.484094 Z"
+           id="path6950-0-2-4-2" />
+        <path
+           style="fill:#000000"
+           d="M 10.171114,23.243514 8.7569,21.8293 7.4841078,23.384935 8.6154786,24.516306 Z"
+           id="path6950-0-2-4-7-3"/>
+        <path
+           style="fill:#000000"
+           d="M 17.239114,16.175314 15.8249,14.7611 l 1.555635,-1.272792 1.131371,1.131371 z"
+           id="path6950-0-2-4-5-9"/>
+        <path
+           style="fill:#000000"
+           d="M 15.820686,23.243314 17.2349,21.8291 l 1.272792,1.555635 -1.131371,1.131371 z"
+           id="path6950-0-2-4-5-0-7" />
+        <circle
+           style="opacity:1;fill:#000000"
+           id="path7079-7"
+           cx="13"
+           cy="19"
+           r="5.0999999" />
+      </g>
+      <circle
+         r="2.5"
+         cy="19"
+         cx="13"
+         id="path7134-3"
+         style="opacity:1;fill:none;stroke:#ffffff;stroke-width:1.01491857px" />
+    </g>
+  </g>
+</svg>
