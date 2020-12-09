@@ -61,6 +61,7 @@ public class CollapsingImageBehavior extends CoordinatorLayout.Behavior<View> {
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
         lp.width = width;
         lp.height = height;
+
         child.setLayoutParams(lp);
         child.setX(x);
         child.setY(y);
