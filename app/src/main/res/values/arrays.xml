@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <array name="doors_spinner_array">
         <item>@string/doors_2</item>
         <item>@string/doors_3</item>

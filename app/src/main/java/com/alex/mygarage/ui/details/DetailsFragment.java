@@ -12,16 +12,21 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.alex.mygarage.GarageRepository;
+import com.alex.mygarage.MainActivity;
 import com.alex.mygarage.R;
 import com.alex.mygarage.adapters.ComponentPagerAdapter;
 import com.alex.mygarage.models.Component;
@@ -59,7 +64,11 @@ public class DetailsFragment extends Fragment {
 //        TextView generalOtherTextView = root.findViewById(R.id.generalOtherText);
 
         // get the id of the vehicle to display details for
-        Vehicle selectedVehicle = garageViewModel.getSelectedVehicle().getValue();
+        garageViewModel.getSelectedVehicle().observe(getViewLifecycleOwner(), (vehicle) -> {
+            Toolbar toolbar = root.findViewById(R.id.pinnedToolbar);
+            toolbar.setTitle(vehicle.getName());
+        });
+
 
         ViewPager2 viewPager = root.findViewById(R.id.viewPager);
         TabLayout tabLayout = root.findViewById(R.id.tabLayout);
@@ -69,9 +78,10 @@ public class DetailsFragment extends Fragment {
             ComponentPagerAdapter componentPagerAdapter = new ComponentPagerAdapter(this, components);
             viewPager.setAdapter(componentPagerAdapter);
 
-            new TabLayoutMediator(tabLayout, viewPager,
-                    (tab, position) -> tab.setText(components.get(position).getName())
-            ).attach();
+            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                tab.setText(components.get(position).getName());
+
+            }).attach();
         });
 
         /*if (selectedVehicle != null) {
@@ -121,6 +131,28 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        NavController navController = Navigation.findNavController(view);
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph()).build();
+        Toolbar toolbar = view.findViewById(R.id.pinnedToolbar);
+
+        NavigationUI.setupWithNavController(
+                toolbar, navController, appBarConfiguration);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        ((MainActivity)getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+//        ((MainActivity)getActivity()).getSupportActionBar().show();
     }
 
 

@@ -123,6 +123,8 @@ public class GarageRepository {
     }
 
     public LiveData<List<ComponentField>> getComponentFields(long cid) {
+        LiveData<List<ComponentField>> fields = garageDao.getComponentFields(cid);
+        System.out.println(fields.getValue() == null ? "NULL" : "FIELD COUNT: " + fields.getValue().size());
         return garageDao.getComponentFields(cid);
     }
 }

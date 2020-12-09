@@ -62,19 +62,133 @@ public abstract class GarageRoomDatabase extends RoomDatabase {
                 vehicle.setId(1);
                 dao.insertVehicle(vehicle);
 
+                Component general = new Component();
+                general.setId(1);
+                general.setIconName("");
+                general.setName("General");
+                general.setVehicleId(1);
+                dao.insertVehicleComponent(general);
+
+                ComponentField year = new ComponentField();
+                year.setCid(1);
+                year.setName("year");
+                year.setValue("2003");
+                dao.insertComponentField(year);
+
+                ComponentField make = new ComponentField();
+                make.setCid(1);
+                make.setName("make");
+                make.setValue("Ford");
+                dao.insertComponentField(make);
+
+                ComponentField model = new ComponentField();
+                model.setCid(1);
+                model.setName("model");
+                model.setValue("Mustang");
+                dao.insertComponentField(model);
+
+                ComponentField trim = new ComponentField();
+                trim.setCid(1);
+                trim.setName("trim");
+                trim.setValue("GT");
+                dao.insertComponentField(trim);
+
+                ComponentField driveType = new ComponentField();
+                driveType.setCid(1);
+                driveType.setName("drive type");
+                driveType.setValue("RWD");
+                dao.insertComponentField(driveType);
+
+                ComponentField g = new ComponentField();
+                g.setCid(1);
+                g.setName("exterior color");
+                g.setValue("Satin Silver");
+                dao.insertComponentField(g);
+
+                g = new ComponentField();
+                g.setCid(1);
+                g.setName("interior color");
+                g.setValue("Charcoal Black");
+                dao.insertComponentField(g);
 
                 Component engine = new Component();
-                engine.setId(1234);
+                engine.setId(2);
                 engine.setIconName("ic_engine_icon_vector");
-                engine.setName("4.6 Modular");
+                engine.setName("Engine");
                 engine.setVehicleId(1);
-                System.out.println("Vehicle ID: " + vehicle.getId() + " !!!!!");
                 dao.insertVehicleComponent(engine);
 
+                ComponentField disp = new ComponentField();
+                disp.setCid(2);
+                disp.setName("displacement");
+                disp.setValue("4.6L");
+                dao.insertComponentField(disp);
+
+                ComponentField valves = new ComponentField();
+                valves.setCid(2);
+                valves.setName("valves per cylinder");
+                valves.setValue("2");
+                dao.insertComponentField(valves);
+
+                ComponentField config = new ComponentField();
+                config.setCid(2);
+                config.setName("configuration");
+                config.setValue("V8");
+                dao.insertComponentField(config);
+
+                ComponentField cylinderHeadConfig = new ComponentField();
+                cylinderHeadConfig.setCid(2);
+                cylinderHeadConfig.setName("cylinder head configuration");
+                cylinderHeadConfig.setValue("SOHC");
+                dao.insertComponentField(cylinderHeadConfig);
+
+                ComponentField e = new ComponentField();
+                e.setCid(2);
+                e.setName("aspiration type");
+                e.setValue("Naturally Aspirated");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("manufacturing plant");
+                e.setValue("Romeo");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("bore");
+                e.setValue("3.552 in (90.2 mm)");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("stroke");
+                e.setValue("3.543 in (90.0 mm)");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("deck height");
+                e.setValue("8.937 in (227.0 mm)");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("connecting rod length");
+                e.setValue("5.933 in (150.7mm)");
+                dao.insertComponentField(e);
+
+                e = new ComponentField();
+                e.setCid(2);
+                e.setName("manufacturing plant");
+                e.setValue("Romeo");
+                dao.insertComponentField(e);
+
+
                 Component trans = new Component();
-                trans.setId(1235);
-                trans.setIconName("none");
-                trans.setName("Tremec T3650");
+                trans.setId(3);
+                trans.setIconName("ic_transmission_icon_vector");
+                trans.setName("Transmission");
                 trans.setVehicleId(1);
                 dao.insertVehicleComponent(trans);
 

@@ -24,7 +24,7 @@
         android:id="@+id/details_fragment"
         android:name="com.alex.mygarage.ui.details.DetailsFragment"
         android:label="@string/title_details"
-        tools:layout="@layout/fragment_details">
+        tools:layout="@layout/vehicle_fragment">
         <action
             android:id="@+id/actionEditVehicle"
             app:destination="@id/editDetailsFragment" />

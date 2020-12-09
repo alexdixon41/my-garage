@@ -59,7 +59,6 @@ public class GarageViewModel extends AndroidViewModel {
 
     public void selectComponentWithId(long id) {
         Component selected = repository.getComponentById(id).getValue();
-        System.out.println("ViewModel: " + selected == null);
         if (selected != null) {
             System.out.println(selected.getName());
         }
@@ -74,12 +73,9 @@ public class GarageViewModel extends AndroidViewModel {
         return selectedComponent;
     }
 
-    public LiveData<List<ComponentField>> getComponentFields() {
-        if (selectedComponent.getValue() != null)
-            return repository.getComponentFields(selectedComponent.getValue().getId());
-
-        System.out.println("No component selected when retrieving fields");
-        return repository.getComponentFields(0);
+    public LiveData<List<ComponentField>> getComponentFields(Component component) {
+        System.out.println("Component to get fields for: " + component.getName() + " - " + component.getId());
+        return repository.getComponentFields(component.getId());
     }
 
 }

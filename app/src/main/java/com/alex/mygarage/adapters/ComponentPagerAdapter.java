@@ -1,12 +1,13 @@
 package com.alex.mygarage.adapters;
 
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alex.mygarage.models.Component;
+import com.alex.mygarage.ui.details.ComponentFragment;
+import com.alex.mygarage.ui.garage.GarageViewModel;
 
 import java.util.List;
 

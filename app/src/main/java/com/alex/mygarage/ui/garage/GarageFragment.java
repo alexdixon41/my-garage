@@ -1,6 +1,7 @@
 package com.alex.mygarage.ui.garage;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.selection.StorageStrategy;
@@ -45,6 +49,10 @@ public class GarageFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         assert getActivity() != null;
+
+//        NavController nav = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+//        nav.navigate(R.id.action_navigation_home_to_blankFragment);
+
         garageViewModel = ViewModelProviders.of(getActivity()).get(GarageViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_garage, container, false);
 
@@ -92,7 +100,7 @@ public class GarageFragment extends Fragment {
                     Activity activity = getActivity();
                     assert activity != null;
                     NavController c = Navigation.findNavController(activity, R.id.nav_host_fragment);
-                    c.navigate(R.id.details_fragment);
+                    c.navigate(R.id.selectVehicleAction);
                 }
             }
         }));
@@ -108,6 +116,19 @@ public class GarageFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        NavController navController = Navigation.findNavController(view);
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph()).build();
+        Toolbar toolbar = view.findViewById(R.id.plainToolbar);
+
+        NavigationUI.setupWithNavController(
+                toolbar, navController, appBarConfiguration);
     }
 
     @Override
@@ -150,12 +171,31 @@ public class GarageFragment extends Fragment {
         protected Long doInBackground(Vehicle... vehicles) {
             long vehicleInsertId = repository.insertVehicle(newVehicle);            // insert the new vehicle so its id will be set
 
+            // insert general component
+            Component general = new Component();
+            general.setIconName("");
+            general.setName("General");
+            general.setVehicleId(vehicleInsertId);
+            long componentInsertId = repository.insertVehicleComponent(general);
+
+            // create and insert default component fields for general vehicle info
+            ArrayList<ComponentField> generalFields = new ArrayList<>();
+            String[] fieldNames = new String[] {"year", "make", "model", "trim package", "body type", "doors", "exterior color", "drive type"};
+            for (String fieldName : fieldNames) {
+                System.out.println(fieldName);
+                ComponentField newField = new ComponentField();
+                newField.setName(fieldName);
+                newField.setCid(componentInsertId);
+                generalFields.add(newField);
+            }
+            repository.insertComponentFields(generalFields);
+
             // insert engine component
             Component engine = new Component();
             engine.setIconName("ic_engine_icon_vector");
             engine.setName("Engine");
             engine.setVehicleId(vehicleInsertId);
-            long componentInsertId = repository.insertVehicleComponent(engine);
+            componentInsertId = repository.insertVehicleComponent(engine);
 
             // create engine component default fields and add to list so they can all be inserted at once
             ArrayList<ComponentField> engineFields = new ArrayList<>();

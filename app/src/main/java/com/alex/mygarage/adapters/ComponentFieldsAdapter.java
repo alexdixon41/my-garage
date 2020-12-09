@@ -32,13 +32,20 @@ public class ComponentFieldsAdapter extends RecyclerView.Adapter<ComponentFields
         }
 
         public void bind(String fieldName, String fieldValue) {
-            this.fieldNameText.setText(fieldName);
-            this.fieldValueText.setText(fieldValue);
+            if (fieldName != null) {
+                if (fieldName.length() > 1)
+                    this.fieldNameText.setText(fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
+                else {
+                    this.fieldNameText.setText(fieldName.toUpperCase());
+                }
+            }
+            this.fieldValueText.setText(fieldValue != null ? fieldValue : "");
         }
     }
 
     public void setComponentFields(List<ComponentField> fields) {
         this.componentFields = fields;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -47,9 +54,9 @@ public class ComponentFieldsAdapter extends RecyclerView.Adapter<ComponentFields
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View componentView = inflater.inflate(R.layout.component_view, parent, false);
+        View fieldView = inflater.inflate(R.layout.field_view, parent, false);
 
-        return new ComponentFieldsAdapter.ViewHolder(componentView);
+        return new ViewHolder(fieldView);
     }
 
     @Override
@@ -66,8 +73,9 @@ public class ComponentFieldsAdapter extends RecyclerView.Adapter<ComponentFields
 
     @Override
     public int getItemCount() {
-        if (componentFields != null)
+        if (componentFields != null) {
             return componentFields.size();
+        }
         return 0;
     }
 }
