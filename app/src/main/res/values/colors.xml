@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#636E72</color>
+    <color name="colorPrimaryDark">#2D3436</color>
+    <color name="colorSoftGray">#B2BEC3</color>
+
+    <color name="colorSilver">#c5ced4</color>
+
+    <color name="colorAccent">#7395AE</color>
+
+    <color name="black">#000000</color>
+
+
+    <color name="colorVehicleImageBackground">#c5ced4</color>
+</resources>

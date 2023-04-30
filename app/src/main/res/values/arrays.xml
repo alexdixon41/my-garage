@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="doors_spinner_array">
+        <item>@string/doors_2</item>
+        <item>@string/doors_3</item>
+        <item>@string/doors_4</item>
+        <item>@string/doors_5</item>
+        <item>@string/doors_6</item>
+    </array>
+
+    <array name="drive_type_spinner_dropdown_array">
+        <item>@string/drive_fwd</item>
+        <item>@string/drive_rwd</item>
+        <item>@string/drive_awd</item>
+        <item>@string/drive_4wd</item>
+    </array>
+
+    <array name="drive_type_spinner_array">
+        <item>@string/drive_fwd_short</item>
+        <item>@string/drive_rwd_short</item>
+        <item>@string/drive_awd_short</item>
+        <item>@string/drive_4wd_short</item>
+    </array>
+</resources>
